@@ -34,7 +34,7 @@
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.473.0",
     "next": "^15.3.3",
-    "next-auth": "^5.0.0-beta.29",
+    "next-auth": "^5.0.0-beta.30",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.5",
