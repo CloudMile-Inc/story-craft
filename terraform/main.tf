@@ -52,7 +52,6 @@ resource "google_project_iam_member" "service_account_roles" {
     "roles/aiplatform.user",
     "roles/storage.objectAdmin",
     "roles/datastore.user",
-    "roles/texttospeech.serviceAgent",
     "roles/cloudtranslate.user",
     "roles/logging.logWriter",
     "roles/monitoring.metricWriter",
@@ -177,6 +176,11 @@ resource "google_cloud_run_v2_service" "storycraft_service" {
       }
 
       env {
+        name  = "LOCATION"
+        value = var.region
+      }
+
+      env {
         name  = "FIRESTORE_DATABASE_ID"
         value = var.firestore_database_id
       }
@@ -184,6 +188,21 @@ resource "google_cloud_run_v2_service" "storycraft_service" {
       env {
         name  = "GCS_BUCKET_NAME"
         value = google_storage_bucket.storycraft_assets.name
+      }
+
+      env {
+        name  = "GCS_VIDEOS_STORAGE_URI"
+        value = "gs://${google_storage_bucket.storycraft_assets.name}/videos/"
+      }
+
+      env {
+        name  = "USE_COSMO"
+        value = "false"
+      }
+
+      env {
+        name  = "LOG_LEVEL"
+        value = "info"
       }
 
       env {
@@ -205,6 +224,17 @@ resource "google_cloud_run_v2_service" "storycraft_service" {
       env {
         name  = "NEXTAUTH_SECRET"
         value = var.nextauth_secret
+      }
+
+      # Google OAuth configuration
+      env {
+        name  = "AUTH_GOOGLE_ID"
+        value = var.auth_google_id
+      }
+
+      env {
+        name  = "AUTH_GOOGLE_SECRET"
+        value = var.auth_google_secret
       }
 
       # Add other environment variables as needed

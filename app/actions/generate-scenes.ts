@@ -338,13 +338,13 @@ export async function generateStoryboard(scenario: Scenario, numScenes: number, 
         const useR2I = true;
         if (useR2I && scene.charactersPresent.length > 0) {
           const presentCharacters: Array<{ name: string, description: string, imageGcsUri?: string }> = newScenario.characters.filter(character =>
-            scene.imagePrompt.Subject.map(subject => subject.name).includes(character.name)
+            scene.imagePrompt.Subject.map(subject => subject.name).includes(character.name) && character.imageGcsUri
           );
           const props: Array<{ name: string, description: string, imageGcsUri?: string }> = newScenario.props.filter(prop =>
-            scene.imagePrompt.Prop?.map(prop => prop.name).includes(prop.name)
+            scene.imagePrompt.Prop?.map(prop => prop.name).includes(prop.name) && prop.imageGcsUri
           );
           const settings: Array<{ name: string, description: string, imageGcsUri?: string }> = newScenario.settings.filter(setting =>
-            scene.imagePrompt.Context.map(context => context.name).includes(setting.name)
+            scene.imagePrompt.Context.map(context => context.name).includes(setting.name) && setting.imageGcsUri
           );
           const imagePrompt = scene.imagePrompt
           const orderedPrompt = {
@@ -358,7 +358,18 @@ export async function generateStoryboard(scenario: Scenario, numScenes: number, 
           };
           const prompt = yaml.dump(orderedPrompt, { indent: 2, lineWidth: -1 })
           let result;
-          if (presentCharacters.length + props.length + settings.length <= 3) {
+          
+          // If no valid images are available, fall back to text-only generation
+          if (presentCharacters.length === 0 && props.length === 0 && settings.length === 0) {
+            logger.warn(`No valid images available for scene ${index + 1}, falling back to text-only generation`);
+            resultJson = await generateImageRest(imagePromptToString(scene.imagePrompt));
+            if (resultJson.predictions[0].raiFilteredReason) {
+              throw new Error(getRAIUserMessage(resultJson.predictions[0].raiFilteredReason))
+            } else {
+              logger.debug(`Generated image: ${resultJson.predictions[0].gcsUri}`);
+              return { ...scene, imageGcsUri: resultJson.predictions[0].gcsUri };
+            }
+          } else if (presentCharacters.length + props.length + settings.length <= 3) {
             const characterParts = presentCharacters.flatMap(character =>
               [createPartFromText(character.name), createPartFromUri(character.imageGcsUri!, 'image/png')]
             )

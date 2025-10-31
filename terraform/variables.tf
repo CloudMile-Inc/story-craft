@@ -40,6 +40,18 @@ variable "nextauth_secret" {
   sensitive   = true
 }
 
+variable "auth_google_id" {
+  description = "Google OAuth client ID for authentication"
+  type        = string
+  sensitive   = true
+}
+
+variable "auth_google_secret" {
+  description = "Google OAuth client secret for authentication"
+  type        = string
+  sensitive   = true
+}
+
 variable "allow_public_access" {
   description = "Whether to allow public access to the Cloud Run service"
   type        = bool

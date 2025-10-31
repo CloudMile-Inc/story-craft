@@ -15,6 +15,10 @@ container_image = "us-central1-docker.pkg.dev/your-gcp-project-id/storycraft/sto
 nextauth_url    = "https://your-cloud-run-url"
 nextauth_secret = "your-nextauth-secret-key-here"
 
+# Google OAuth configuration
+auth_google_id     = "your-google-oauth-client-id"
+auth_google_secret = "your-google-oauth-client-secret"
+
 # Access control
 allow_public_access = true
 

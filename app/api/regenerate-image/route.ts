@@ -23,13 +23,13 @@ export async function POST(request: NextRequest) {
     const useR2I = true;
     if (useR2I) {
       const presentCharacters: Array<{ name: string, description: string, imageGcsUri?: string }> = scenario.characters.filter(character =>
-        prompt.Subject.map(subject => subject.name).includes(character.name)
+        prompt.Subject.map(subject => subject.name).includes(character.name) && character.imageGcsUri
       );
       const props: Array<{ name: string, description: string, imageGcsUri?: string }> = scenario.props.filter(prop =>
-        prompt.Prop?.map(prop => prop.name).includes(prop.name)
+        prompt.Prop?.map(prop => prop.name).includes(prop.name) && prop.imageGcsUri
       );
       const settings: Array<{ name: string, description: string, imageGcsUri?: string }> = scenario.settings.filter(setting =>
-        prompt.Context.map(context => context.name).includes(setting.name)
+        prompt.Context.map(context => context.name).includes(setting.name) && setting.imageGcsUri
       );
       const orderedPrompt = {
         Style: prompt.Style,
@@ -44,7 +44,21 @@ export async function POST(request: NextRequest) {
       logger.debug(`Prompt string:\n${promptString}`)
 
       let result;
-      if (presentCharacters.length + props.length + settings.length <= 3) {
+      
+      // If no valid images are available, fall back to text-only generation
+      if (presentCharacters.length === 0 && props.length === 0 && settings.length === 0) {
+        logger.warn(`No valid images available for regeneration, falling back to text-only generation`);
+        const resultJson = await generateImageRest(imagePromptToString(prompt as ImagePrompt));
+        if (resultJson.predictions[0].raiFilteredReason) {
+          throw new Error(getRAIUserMessage(resultJson.predictions[0].raiFilteredReason))
+        } else {
+          logger.debug(`Generated image: ${resultJson.predictions[0].gcsUri}`);
+          return NextResponse.json({
+            success: true,
+            imageGcsUri: resultJson.predictions[0].gcsUri
+          });
+        }
+      } else if (presentCharacters.length + props.length + settings.length <= 3) {
         const characterParts = presentCharacters.flatMap(character =>
           [createPartFromText(character.name), createPartFromUri(character.imageGcsUri!, 'image/png')]
         )
