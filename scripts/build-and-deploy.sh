@@ -6,8 +6,8 @@
 set -e
 
 # Configuration - Update these values
-PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
-REGION="${REGION:-us-central1}"
+PROJECT_ID="${PROJECT_ID:-mp-ai-video}"
+REGION="${REGION:-asia-southeast1}"
 SERVICE_NAME="storycraft"
 REPOSITORY_NAME="storycraft"
 
@@ -20,7 +20,7 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}🚀 Building and deploying StoryCraft application${NC}"
 
 # Check if required environment variables are set
-if [ "$PROJECT_ID" = "your-gcp-project-id" ]; then
+if [ -z "$PROJECT_ID" ]; then
     echo -e "${RED}❌ Please set the PROJECT_ID environment variable${NC}"
     exit 1
 fi

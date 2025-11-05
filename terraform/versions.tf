@@ -8,9 +8,9 @@ terraform {
     }
   }
 
-  # Uncomment and configure if you want to use remote state
-  # backend "gcs" {
-  #   bucket = "your-terraform-state-bucket"
-  #   prefix = "terraform/storycraft"
-  # }
+  # Remote state backend configuration
+  backend "gcs" {
+    bucket = "mp-ai-video-terraform-state"
+    prefix = "terraform/storycraft"
+  }
 }
