@@ -7,7 +7,7 @@ set -e
 
 # Configuration - Update these values
 PROJECT_ID="${PROJECT_ID:-mp-ai-video}"
-REGION="${REGION:-asia-southeast1}"
+REGION="${REGION:-us-central1}"
 SERVICE_NAME="storycraft"
 REPOSITORY_NAME="storycraft"
 
