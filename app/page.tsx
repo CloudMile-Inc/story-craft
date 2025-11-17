@@ -300,7 +300,7 @@ export default function Home() {
     }
   }
 
-  const handleGenerateAllVideos = async (model: string = "veo-3.0-generate-001", generateAudio: boolean = true, durationSeconds: number = 8) => {
+  const handleGenerateAllVideos = async (model: string = "veo-3.1-generate-preview", generateAudio: boolean = true, durationSeconds: number = 8) => {
     if (!scenario) return;
     setErrorMessage(null);
     console.log("[Client] Generating videos for all scenes - START");

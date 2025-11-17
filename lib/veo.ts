@@ -5,7 +5,7 @@ import { getRAIUserMessage } from './rai';
 
 const LOCATION = process.env.LOCATION
 const PROJECT_ID = process.env.PROJECT_ID
-const MODEL = "veo-3.0-generate-001" //process.env.MODEL
+const MODEL = "veo-3.1-generate-preview" //process.env.MODEL
 const GCS_VIDEOS_STORAGE_URI = process.env.GCS_VIDEOS_STORAGE_URI
 
 
@@ -43,7 +43,7 @@ async function getAccessToken(): Promise<string> {
   }
 }
 
-async function checkOperation(operationName: string, model: string = "veo-3.0-generate-001"): Promise<GenerateVideoResponse> {
+async function checkOperation(operationName: string, model: string = "veo-3.1-generate-preview"): Promise<GenerateVideoResponse> {
   const token = await getAccessToken();
 
   const response = await fetch(
@@ -67,7 +67,7 @@ async function checkOperation(operationName: string, model: string = "veo-3.0-ge
   return jsonResponse as GenerateVideoResponse;
 }
 
-export async function waitForOperation(operationName: string, model: string = "veo-3.0-generate-001"): Promise<GenerateVideoResponse> {
+export async function waitForOperation(operationName: string, model: string = "veo-3.1-generate-preview"): Promise<GenerateVideoResponse> {
   const checkInterval = 2000; // Interval for checking operation status (in milliseconds)
 
   const pollOperation = async (): Promise<GenerateVideoResponse> => {
@@ -94,7 +94,7 @@ async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function generateSceneVideo(prompt: string, imageGcsUri: string, aspectRatio: string = "16:9", model: string = "veo-3.0-generate-001", generateAudio: boolean = true, durationSeconds: number = 8): Promise<string> {
+export async function generateSceneVideo(prompt: string, imageGcsUri: string, aspectRatio: string = "16:9", model: string = "veo-3.1-generate-preview", generateAudio: boolean = true, durationSeconds: number = 8): Promise<string> {
   const token = await getAccessToken();
   const maxRetries = 5; // Maximum number of retries
   const initialDelay = 1000; // Initial delay in milliseconds (1 second)

@@ -67,10 +67,10 @@ export async function POST(req: Request): Promise<Response> {
         } else {
           const promptString = typeof scene.videoPrompt === 'string' ? scene.videoPrompt : videoPromptToString(scene.videoPrompt, scenario);
           logger.debug(promptString)
-          const operationName = await generateSceneVideo(promptString, scene.imageGcsUri!, aspectRatio, model || "veo-3.0-generate-001", generateAudio !== false, durationSeconds);
+          const operationName = await generateSceneVideo(promptString, scene.imageGcsUri!, aspectRatio, model || "veo-3.1-generate-preview", generateAudio !== false, durationSeconds);
           logger.debug(`Operation started for scene ${index + 1}`);
 
-          const generateVideoResponse = await waitForOperation(operationName, model || "veo-3.0-generate-001");
+          const generateVideoResponse = await waitForOperation(operationName, model || "veo-3.1-generate-preview");
           logger.debug(`Video generation completed for scene ${index + 1}`);
           logger.debug(generateVideoResponse)
 

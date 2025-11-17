@@ -13,23 +13,23 @@ import { VideoPlayer } from '../video/video-player'
 
 const VEO_MODEL_OPTIONS = [
   { 
-    label: "Videos with Veo 3.0 Fast 🔈", 
-    modelName: "veo-3.0-fast-generate-001",
+    label: "Videos with Veo 3.1 Fast 🔈 Preview", 
+    modelName: "veo-3.1-fast-generate-preview",
     generateAudio: true
   },
   { 
-    label: "Videos with Veo 3.0 Fast", 
-    modelName: "veo-3.0-fast-generate-001",
+    label: "Videos with Veo 3.1 Fast Preview", 
+    modelName: "veo-3.1-fast-generate-preview",
     generateAudio: false
   },
   { 
-    label: "Videos with Veo 3.0 🔈", 
-    modelName: "veo-3.0-generate-001",
+    label: "Videos with Veo 3.1 🔈 Preview", 
+    modelName: "veo-3.1-generate-preview",
     generateAudio: true
   },
   { 
-    label: "Videos with Veo 3.0", 
-    modelName: "veo-3.0-generate-001",
+    label: "Videos with Veo 3.1 Preview", 
+    modelName: "veo-3.1-generate-preview",
     generateAudio: false
   }
 ];
